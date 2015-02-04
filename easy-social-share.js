@@ -5,19 +5,21 @@ angular.module('td.easySocialShare', [])
     return {
       link: function (scope, elem, attrs) {
         var i,
-            sites = ['twitter', 'facebook', 'linkedin', 'google-plus', 'reddit', 'tumblr'],
+            sites = ['twitter', 'facebook', 'linkedin', 'google-plus', 'reddit', 'tumblr', 'email'],
             theLink,
             links = attrs.shareLinks.toLowerCase().split(','),
             pageLink = encodeURIComponent($location.absUrl()),
             pageTitle = attrs.shareTitle,
             pageTitleUri = encodeURIComponent(pageTitle),
             shareLinks = [],
-            square = '';
+            square = '',
+            circle = false;
 
         elem.addClass('td-easy-social-share');
 
         // check if square icon specified
         square = (attrs.shareSquare && attrs.shareSquare.toString() === 'true') ? '-square' : '';
+        circle = (attrs.shareCircle && attrs.shareCircle.toString() === 'true');
 
         // assign share link for each network
         angular.forEach(links, function (key) {
@@ -42,6 +44,9 @@ angular.module('td.easySocialShare', [])
             case 'tumblr':
                theLink = 'http://www.tumblr.com/share/link?url=' + pageLink + '&amp;name=' + pageTitleUri;
               break;
+            case 'email':
+               theLink = 'mailto:?to=&body=Check%20' + pageTitleUri + '%20out!%20' + pageLink;
+              break;
           }
 
           if (sites.indexOf(key) > -1) {
@@ -49,11 +54,22 @@ angular.module('td.easySocialShare', [])
           }
         });
 
+        var getFAIcon = function(network) {
+          if (network === 'email') return 'envelope-o';
+          return network;
+        }
+
         for (i = 0; i < shareLinks.length; i++) {
           var anchor = '';
-          anchor += '<a href="'+ shareLinks[i].url + '"';
-          anchor += ' class="fa fa-'+shareLinks[i].network + square + '" target="_blank"';
-          anchor += '></a>';
+          anchor += '<a href="' + shareLinks[i].url + '" target="_blank">';
+          if (circle) {
+            anchor += '<span class="fa-stack fa-lg">\
+                      <i class="fa fa-circle fa-stack-2x"></i>\
+                      <i class="fa fa-' + getFAIcon(shareLinks[i].network) + ' fa-stack-1x fa-inverse"></i></span>';
+          } else {
+            anchor += '<i class="fa fa-' + getFAIcon(shareLinks[i].network) + square + '"></i>';
+          }
+          anchor += '</a>';
           elem.append(anchor);
         }
       }
