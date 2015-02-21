@@ -19,8 +19,7 @@ angular.module('td.easySocialShare', [])
           function() { return attrs.shareLink; },
           function(newVal, oldVal) {
             if (newVal) {
-              pageLink = attrs.shareLink || encodeURIComponent($location.absUrl())
-              console.error('test', pageLink)
+              pageLink = attrs.shareLink || encodeURIComponent($location.absUrl());
               buildChildren();
             } else {
               clearChildren();
