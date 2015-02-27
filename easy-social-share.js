@@ -41,7 +41,7 @@ angular.module('td.easySocialShare', [])
 
           for (i = 0; i < shareLinks.length; i++) {
             var anchor = '';
-            anchor += '<a href="' + shareLinks[i].url + '" target="_blank">';
+            anchor += '<a class="social-' + shareLinks[i].network + '" href="' + shareLinks[i].url + '" target="_blank">';
             if (circle) {
               anchor += '<span class="fa-stack fa-lg">\
                         <i class="fa fa-circle fa-stack-2x"></i>\
